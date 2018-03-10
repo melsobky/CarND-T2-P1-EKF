@@ -61,7 +61,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
 	VectorXd y = z - z_pred;
 
-	// normalize the angle between -pi to pi to avoid calculation errors of object position
+	/* normalize the angle between -pi to pi 
+	 * as angle some times goes up to 7 or -7 which causes the algo 
+	 * miss calculate the object position
+	*/
 	while(y(1) > M_PI){
 		y(1) -= DoublePI;
 	}
@@ -70,7 +73,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 		y(1) += DoublePI;
 	}
 
-	cout << "delta theta = " << y(1) << endl;
+	//cout << "delta theta = " << y(1) << endl;
 
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
